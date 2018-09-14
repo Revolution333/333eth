@@ -1,6 +1,6 @@
 # Revolution Smart Contracts
 [![Coverage Status](https://coveralls.io/repos/github/Revolution333/333eth/badge.svg?branch=master)](https://coveralls.io/github/Revolution333/333eth/?branch=master)
-[![Build Status](https://travis-ci.org/Revolution333/333eth/.svg?branch=master)](https://travis-ci.org/Revolution333/333eth)
+[![Build Status](https://travis-ci.org/Revolution333/333eth.svg?branch=master)](https://travis-ci.org/Revolution333/333eth)
 
 
 ## Details
