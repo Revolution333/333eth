@@ -1,4 +1,7 @@
 # Revolution Smart Contracts
+[![Coverage Status](https://coveralls.io/repos/github/Revolution333/333eth/badge.svg?branch=master)](https://coveralls.io/github/Revolution333/333eth/?branch=master)
+[![Build Status](https://travis-ci.org/Revolution333/333eth/.svg?branch=master)](https://travis-ci.org/Revolution333/333eth)
+
 
 ## Details
 - Address: [0x311f71389e3DE68f7B2097Ad02c6aD7B2dDE4C71](https://etherscan.io/address/0x311f71389e3de68f7b2097ad02c6ad7b2dde4c71)
