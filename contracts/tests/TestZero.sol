@@ -6,19 +6,27 @@ import "../Zero.sol";
 contract TestZero {
   using Zero for *;
   
-  function requireNotZeroUint(uint a) public pure {
-    a.requireNotZero();
-  }
-
   function requireNotZeroAddr(address addr) public pure {
     addr.requireNotZero();
   }
 
-  function notZero(address addr) public pure returns(bool) {
+  function requireNotZeroUint(uint val) public pure {
+    val.requireNotZero();
+  }
+
+  function addrNotZero(address addr) public pure returns(bool) {
     return addr.notZero();
   }
 
-  function isZero(address addr) public pure returns(bool) {
+  function addrIsZero(address addr) public pure returns(bool) {
     return addr.isZero();
+  }
+
+  function uintIsZero(uint a) public pure returns(bool) {
+    return a.isZero();
+  }
+
+  function uintNotZero(uint a) public pure returns(bool) {
+    return a.notZero();
   }
 }

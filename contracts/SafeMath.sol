@@ -1,6 +1,9 @@
 pragma solidity ^0.4.23;
 
 
+// solium-disable error-reason
+
+
 /**
  * @title SafeMath
  * @dev Math operations with safety checks that revert on error

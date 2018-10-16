@@ -2,105 +2,51 @@ pragma solidity ^0.4.23;
 
 
 
-contract InvestorsStorage {
-  struct investor {
-    uint keyIndex;
-    uint value;
+import "./Accessibility.sol";
+
+
+contract InvestorsStorage is Accessibility {
+  struct Investor {
+    uint investment;
     uint paymentTime;
-    uint refBonus;
   }
-  struct itmap {
-    mapping(address => investor) data;
-    address[] keys;
-  }
-  itmap private s;
-  address private owner;
+  uint public size;
 
-  modifier onlyOwner() {
-    require(msg.sender == owner, "access denied");
-    _;
+  mapping (address => Investor) private investors;
+
+  function isInvestor(address addr) public view returns (bool) {
+    return investors[addr].investment > 0;
   }
 
-  constructor() public {
-    owner = msg.sender;
-    s.keys.length++;
+  function investorInfo(address addr) public view returns(uint investment, uint paymentTime) {
+    investment = investors[addr].investment;
+    paymentTime = investors[addr].paymentTime;
   }
 
-  function insert(address addr, uint value) public onlyOwner returns (bool) {
-    uint keyIndex = s.data[addr].keyIndex;
-    if (keyIndex != 0) return false; // solium-disable-line lbrace
-    s.data[addr].value = value;
-    keyIndex = s.keys.length++;
-    s.data[addr].keyIndex = keyIndex;
-    s.keys[keyIndex] = addr;
+  function newInvestor(address addr, uint investment, uint paymentTime) public onlyOwner returns (bool) {
+    Investor storage inv = investors[addr];
+    if (inv.investment != 0 || investment == 0) {
+      return false;
+    }
+    inv.investment = investment;
+    inv.paymentTime = paymentTime;
+    size++;
     return true;
   }
 
-  function investorFullInfo(address addr) public view returns(uint, uint, uint, uint) {
-    return (
-      s.data[addr].keyIndex,
-      s.data[addr].value,
-      s.data[addr].paymentTime,
-      s.data[addr].refBonus
-    );
-  }
-
-  function investorBaseInfo(address addr) public view returns(uint, uint, uint) {
-    return (
-      s.data[addr].value,
-      s.data[addr].paymentTime,
-      s.data[addr].refBonus
-    );
-  }
-
-  function investorShortInfo(address addr) public view returns(uint, uint) {
-    return (
-      s.data[addr].value,
-      s.data[addr].refBonus
-    );
-  }
-
-  function addRefBonus(address addr, uint refBonus) public onlyOwner returns (bool) {
-    // solium-disable-next-line lbrace
-    if (s.data[addr].keyIndex == 0) return false;
-    s.data[addr].refBonus += refBonus;
-    return true;
-  }
-
-  function addValue(address addr, uint value) public onlyOwner returns (bool) {
-    // solium-disable-next-line lbrace
-    if (s.data[addr].keyIndex == 0) return false;
-    s.data[addr].value += value;
+  function addInvestment(address addr, uint investment) public onlyOwner returns (bool) {
+    if (investors[addr].investment == 0) {
+      return false;
+    }
+    investors[addr].investment += investment;
     return true;
   }
 
   function setPaymentTime(address addr, uint paymentTime) public onlyOwner returns (bool) {
-    // solium-disable-next-line lbrace
-    if (s.data[addr].keyIndex == 0) return false;
-    s.data[addr].paymentTime = paymentTime;
+    if (investors[addr].investment == 0) {
+      return false;
+    }
+    investors[addr].paymentTime = paymentTime;
     return true;
-  }
-
-  function setRefBonus(address addr, uint refBonus) public onlyOwner returns (bool) {
-    // solium-disable-next-line lbrace
-    if (s.data[addr].keyIndex == 0) return false;
-    s.data[addr].refBonus = refBonus;
-    return true;
-  }
-
-  function keyFromIndex(uint i) public view returns (address) {
-    return s.keys[i];
-  }
-
-  function contains(address addr) public view returns (bool) {
-    return s.data[addr].keyIndex > 0;
-  }
-
-  function size() public view returns (uint) {
-    return s.keys.length;
-  }
-
-  function iterStart() public pure returns (uint) {
-    return 1;
   }
 }

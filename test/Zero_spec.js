@@ -15,15 +15,6 @@ contract('Zero', () => {
     owner = accs[0];
     await initContract();
   });
-      
-  describe('uint.requireNotZero', () => {
-    it('throw on zero', async () => {
-      await assertRevert(instance.requireNotZeroUint(0));
-    });
-    it('ok on not zero', async () => {
-      await instance.requireNotZeroUint(1);
-    });
-  });
   describe('address.requireNotZero', () => {
     it('throw on zero', async () => {
       await assertRevert(instance.requireNotZeroAddr(ZERO_ADDRESS));
@@ -32,24 +23,57 @@ contract('Zero', () => {
       await instance.requireNotZeroAddr(instance.address);
     });
   });
-  describe('address.notZero', () => {
-    it('not zero - true', async () => {
-      let r = await instance.notZero(instance.address);
-      assert.equal(r, true);
+  describe('uint.requireNotZero', () => {
+    it('throw on zero', async () => {
+      await assertRevert(instance.requireNotZeroUint(0));
     });
-    it('zero - false', async () => {
-      let r = await instance.notZero(ZERO_ADDRESS);
-      assert.equal(r, false);
+    it('ok on not zero', async () => {
+      await instance.requireNotZeroUint(1);
     });
   });
-  describe('address.isZero', () => {
-    it('zero - true', async () => {
-      let r = await instance.isZero(ZERO_ADDRESS);
-      assert.equal(r, true);
+  describe('address', () => {
+    context('notZero', () => {
+      it('not zero - true', async () => {
+        let r = await instance.addrNotZero(instance.address);
+        assert.equal(r, true);
+      });
+      it('zero - false', async () => {
+        let r = await instance.addrNotZero(ZERO_ADDRESS);
+        assert.equal(r, false);
+      });
     });
-    it('not zero - false', async () => {
-      let r = await instance.isZero(instance.address);
-      assert.equal(r, false);
+    context('isZero', () => {
+      it('zero - true', async () => {
+        let r = await instance.addrIsZero(ZERO_ADDRESS);
+        assert.equal(r, true);
+      });
+      it('not zero - false', async () => {
+        let r = await instance.addrIsZero(instance.address);
+        assert.equal(r, false);
+      });
+    });
+  });
+
+  describe('uint', () => {
+    context('notZero', () => {
+      it('not zero - true', async () => {
+        let r = await instance.uintNotZero(123);
+        assert.equal(r, true);
+      });
+      it('zero - false', async () => {
+        let r = await instance.uintNotZero(0);
+        assert.equal(r, false);
+      });
+    });
+    context('isZero', () => {
+      it('zero - true', async () => {
+        let r = await instance.uintIsZero(0);
+        assert.equal(r, true);
+      });
+      it('not zero - false', async () => {
+        let r = await instance.uintIsZero(123);
+        assert.equal(r, false);
+      });
     });
   });
 });
